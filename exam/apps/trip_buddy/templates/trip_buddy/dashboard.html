@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Travel Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-sm-11"><p class="h4">Welcome {{user_info.first_name}}!</p></div>
+            <div class="col-sm-1"><a href="/logout">Logout</a></div> 
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <p class="h3">Your Trip Schedules</p>
+                </div>
+                <div class="col-sm-3">
+                    <a href="/addtrip" class="btn btn-primary">Create a new trip!</a>
+                </div>
+            </div>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Destination</th>
+                        <th>Travel Start Date</th>
+                        <th>Travel End Date</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user_trip in user_trips %}
+                    <tr>
+                        <th><a href="/view/{{user_trip.id}}">{{user_trip.destination}}</a></th>
+                        <th>{{user_trip.travel_date_from}}</th>
+                        <th>{{user_trip.travel_date_to}}</th>
+                        <th>{{user_trip.description}}</th>
+                        <th><a href="/cancel/{{user_trip.id}}">Cancel</a> {% if user_trip.created_by.id == request.session.user_id %}<a href="/delete/{{user_trip.id}}">Delete</a>{% endif %}</th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <p class="h3">Other User's Travel Plans</p>
+            </div>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Destination</th>
+                        <th>Travel Start Date</th>
+                        <th>Travel End Date</th>
+                        <th>Description</th>
+                        <th>Do you want to join?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for other_trip in other_trips %}
+                    <tr>
+                        <th><a href="/view/{{other_trip.id}}">{{other_trip.destination}}</a></th>
+                        <th>{{other_trip.travel_date_from}}</th>
+                        <th>{{other_trip.travel_date_to}}</th>
+                        <th>{{other_trip.description}}</th>
+                        <th><a href="/join/{{other_trip.id}}">Join</a></th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
